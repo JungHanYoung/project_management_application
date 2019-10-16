@@ -15,7 +15,7 @@ const gulp = require('gulp'),
 sass.compiler = require('node-sass');
 
 function clean() {
-    return del(`${__dirname}/dist`);
+    return del([`${__dirname}/dist`, `${__dirname}/.publish`]);
 }
 
 function image() {
@@ -91,7 +91,7 @@ const assets = gulp.series([pug, style, babel]);
 
 const dev = gulp.series([prepare, assets, watch]);
 const build = gulp.series([prepare, assets]);
-const deploy = gulp.series([build, ghDeploy]);
+const deploy = gulp.series([build, ghDeploy, clean]);
 
 
 exports.dev = dev;
