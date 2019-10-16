@@ -6,7 +6,9 @@ const gulp = require('gulp'),
     del = require('del'),
     gulpImage = require('gulp-image'),
     gulpBabel = require('gulp-babel'),
-    imageResize = require('gulp-image-resize')
+    imageResize = require('gulp-image-resize'),
+    bro = require('gulp-bro'),
+    babelify = require('babelify')
 
 
 sass.compiler = require('node-sass');
@@ -56,6 +58,12 @@ function pug() {
 
 function babel() {
     return gulp.src('./src/js/main.js')
+        .pipe(bro({
+            transform: [
+                babelify.configure({ presets: ['@babel/preset-env'] }),
+                [ 'uglifyify', { global: true } ]
+              ]
+        }))
         .pipe(gulpBabel())
         .pipe(gulp.dest("./dist/js"))
         .pipe(browserSync.stream());
