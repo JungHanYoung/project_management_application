@@ -1,0 +1,26 @@
+extends templates/layout
+
+block content
+    section(class="content")
+        div(class="content-wrapper")
+            include ./partials/header
+            div(class="main")
+                div(class="main-header")
+                    div(class="search-bar")
+                        i(class="xi-search input-icon")
+                        input(class="search-bar-input", placeholder="Search by project name")
+                    div(class="main-menu")
+                        div(class="sort-dropdown")
+                            label Sort by
+                            span time expire
+                            i(class="xi-angle-down-min")
+                            .dropdown-content
+                                p Hello World!
+                        a(class="detail-sort")
+                            i(class="xi-tune")
+                        div(class="visible-type")
+                            a(class="line")
+                                i(class="xi-bars")
+                            a(class="box")
+                                i(class="xi-view-module")
+                include ./mixins/project-list2
