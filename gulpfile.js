@@ -8,7 +8,8 @@ const gulp = require('gulp'),
     gulpBabel = require('gulp-babel'),
     imageResize = require('gulp-image-resize'),
     bro = require('gulp-bro'),
-    babelify = require('babelify')
+    babelify = require('babelify'),
+    ghPages = require('gulp-gh-pages');
 
 
 sass.compiler = require('node-sass');
@@ -69,6 +70,10 @@ function babel() {
         .pipe(browserSync.stream());
 }
 
+function ghDeploy() {
+    return gulp.src("dist/**/*").pipe(ghPages())
+}
+
 function watch() {
 
     browserSync.init({
@@ -81,8 +86,14 @@ function watch() {
     gulp.watch('./src/js/**/*.js').on('change', babel);
 }
 
-exports.style = style;
-exports.watch = watch;
-exports.pug = pug;
+const prepare = gulp.series([clean, image]);
+const assets = gulp.series([pug, style, babel]);
 
-exports.default = gulp.series(clean, image, pug, style, babel, watch);
+const dev = gulp.series([prepare, assets, watch]);
+const build = gulp.series([prepare, assets]);
+const deploy = gulp.series([build, ghDeploy]);
+
+
+exports.dev = dev;
+exports.build = build;
+exports.deploy = deploy;
